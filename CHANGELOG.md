@@ -8,6 +8,18 @@ This project follows [Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- **User docs under `doc/`**: installation, `WindDebugRegistry`, `WindDebugResolver`, `WindPerfResolver`, a testing guide and a versioning guide, published by the docs site at `https://anilcancakir.com/wind_kit_diagnostics_contracts/docs/`.
+- **`llms.txt` and `example/example.md`** for AI coding agents and pub.dev, and a security policy.
+
+### Changed
+
+- The README is rewritten around what each contract returns, with a rules table for AI coding agents. It states the real install gate: wind_kit registers its resolvers behind `!kReleaseMode`, so debug and profile builds carry them.
+
+- **Renamed from `fluttersdk_wind_diagnostics_contracts` to `wind_kit_diagnostics_contracts`.** The package and its library file (`package:wind_kit_diagnostics_contracts/wind_kit_diagnostics_contracts.dart`) carry the new name, and the repository is `anilcancakir/wind_kit_diagnostics_contracts`. Migration: replace the dependency in `pubspec.yaml` and the import. `WindDebugResolver`, `WindDebugRegistry` and `WindPerfResolver`, and the frozen v1 key sets of `resolve` and `stats`, are unchanged.
+- The library and test comments name `wind_kit` and `tapir` instead of `fluttersdk_wind` and `fluttersdk_dusk`; the pubspec description and homepage were rewritten (no `documentation` key).
+
 ---
 
 ## [1.2.0] - 2026-09-29

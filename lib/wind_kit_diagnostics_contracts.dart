@@ -9,7 +9,7 @@
 /// counts) that belong to no single element and so have nowhere to live
 /// on the first contract.
 ///
-/// Debug-tooling packages (e.g., fluttersdk_dusk for E2E snapshots and
+/// Debug-tooling packages (e.g., tapir for E2E snapshots and
 /// performance sessions, future devtools-aware inspectors) consume them
 /// through `WindDebugRegistry.current` and `WindDebugRegistry.currentPerf`
 /// without ever importing wind types directly.
@@ -23,7 +23,7 @@ import 'package:meta/meta.dart';
 
 /// Resolves runtime Wind widget state for a given Element.
 ///
-/// Implementations live in `fluttersdk_wind` (production) and test
+/// Implementations live in `wind_kit` (production) and test
 /// fakes (debug-only). Consumers receive a Map and never need to
 /// understand wind's internal types.
 ///
@@ -49,7 +49,7 @@ abstract class WindDebugResolver {
 
 /// Resolves aggregate Wind runtime performance statistics.
 ///
-/// Implementations live in `fluttersdk_wind` (production) and test
+/// Implementations live in `wind_kit` (production) and test
 /// fakes (debug-only). This is a SECOND, separate contract from
 /// [WindDebugResolver]: that one resolves per-Element widget state,
 /// this one resolves process-wide counters that have no single
@@ -62,7 +62,7 @@ abstract class WindPerfResolver {
   /// Returns a Map of aggregate Wind performance counters.
   ///
   /// The returned Map's key set is documented as the cross-repo
-  /// contract read by `fluttersdk_dusk`'s performance snapshot:
+  /// contract read by `tapir`'s performance snapshot:
   /// - `cacheHits`: `int`
   /// - `cacheMisses`: `int`
   /// - `cacheBypasses`: `int`
