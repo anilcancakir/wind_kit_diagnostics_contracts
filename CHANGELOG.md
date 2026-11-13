@@ -8,6 +8,10 @@ This project follows [Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+---
+
+## [1.3.0] - 2026-11-13
+
 ### Added
 
 - **User docs under `doc/`**: installation, `WindDebugRegistry`, `WindDebugResolver`, `WindPerfResolver`, a testing guide and a versioning guide, published by the docs site at `https://anilcancakir.com/wind_kit_diagnostics_contracts/docs/`.
