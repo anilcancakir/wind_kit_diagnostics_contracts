@@ -33,6 +33,7 @@ coverage/
 .pub/
 /build/
 pubspec.lock
+pubspec_overrides.yaml
 
 # AI coding tools
 .ac/
