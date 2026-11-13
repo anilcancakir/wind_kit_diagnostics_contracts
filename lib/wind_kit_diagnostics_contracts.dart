@@ -9,7 +9,7 @@
 /// counts) that belong to no single element and so have nowhere to live
 /// on the first contract.
 ///
-/// Debug-tooling packages (e.g., fluttersdk_dusk for E2E snapshots and
+/// Debug-tooling packages (e.g., tapir for E2E snapshots and
 /// performance sessions, future devtools-aware inspectors) consume them
 /// through `WindDebugRegistry.current` and `WindDebugRegistry.currentPerf`
 /// without ever importing wind types directly.
@@ -23,11 +23,11 @@ import 'package:meta/meta.dart';
 
 /// Resolves runtime Wind widget state for a given Element.
 ///
-/// Implementations live in `fluttersdk_wind` (production) and test
+/// Implementations live in `wind_kit` (production) and test
 /// fakes (debug-only). Consumers receive a Map and never need to
 /// understand wind's internal types.
 ///
-/// Frozen contract for the 1.0.0 line; additive changes only (new
+/// Frozen contract for the 1.x line; additive changes only (new
 /// keys in the returned Map allowed; renaming or removing existing
 /// keys requires a major bump).
 abstract class WindDebugResolver {
@@ -49,7 +49,7 @@ abstract class WindDebugResolver {
 
 /// Resolves aggregate Wind runtime performance statistics.
 ///
-/// Implementations live in `fluttersdk_wind` (production) and test
+/// Implementations live in `wind_kit` (production) and test
 /// fakes (debug-only). This is a SECOND, separate contract from
 /// [WindDebugResolver]: that one resolves per-Element widget state,
 /// this one resolves process-wide counters that have no single
@@ -62,7 +62,7 @@ abstract class WindPerfResolver {
   /// Returns a Map of aggregate Wind performance counters.
   ///
   /// The returned Map's key set is documented as the cross-repo
-  /// contract read by `fluttersdk_dusk`'s performance snapshot:
+  /// contract read by `tapir`'s performance snapshot:
   /// - `cacheHits`: `int`
   /// - `cacheMisses`: `int`
   /// - `cacheBypasses`: `int`
@@ -85,10 +85,11 @@ abstract class WindPerfResolver {
 /// Process-global registry for the single active `WindDebugResolver`
 /// and the single active `WindPerfResolver`.
 ///
-/// Wind installs its concrete resolvers at app boot (gated by
-/// `!kReleaseMode`, so debug and profile builds); debug-tooling consumers look up the current
-/// resolver via [current] / [currentPerf]. Never registered in
-/// release builds.
+/// The host app installs the concrete resolvers at boot through wind_kit's
+/// `Wind.installDebugResolver()` and `Wind.installPerfResolver()` (gated by
+/// `!kReleaseMode`, so debug and profile builds); debug-tooling consumers
+/// look up the current resolver via [current] / [currentPerf]. Never
+/// registered in release builds.
 class WindDebugRegistry {
   // Unreachable from a test by design: a private constructor whose only job is
   // to stop this static-only registry being instantiated.

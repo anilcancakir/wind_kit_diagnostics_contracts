@@ -1,22 +1,21 @@
-name: fluttersdk_wind_diagnostics_contracts
-description: "Wind UI widget state contracts for Flutter debug-tooling and AI agents (MCP). Zero-dep abstract interface implemented in fluttersdk_wind, consumed in fluttersdk_dusk."
-version: 1.2.0
-homepage: https://fluttersdk.com/wind
-repository: https://github.com/fluttersdk/wind_diagnostics_contracts
-issue_tracker: https://github.com/fluttersdk/wind_diagnostics_contracts/issues
-documentation: https://fluttersdk.com/wind/diagnostics_contracts
+name: wind_kit_diagnostics_contracts
+description: "Read wind_kit widget state (className, breakpoint, brightness, states) from debug tools and AI agents without depending on wind_kit. Pure contracts, no UI."
+version: 1.3.0
+homepage: https://anilcancakir.com/wind_kit_diagnostics_contracts
+repository: https://github.com/anilcancakir/wind_kit_diagnostics_contracts
+issue_tracker: https://github.com/anilcancakir/wind_kit_diagnostics_contracts/issues
 
 # pub.dev search topics (max 5, lowercase + hyphens, regex ^[a-z][a-z0-9-]{0,31}$).
 # Drives tag-based discovery on https://pub.dev/packages?q=topic%3A<topic>.
-# Selected for 2025-2026 search intent: MCP-driven Flutter testing (mcp-server,
-# ai-agents, flutter-testing) + Wind-ecosystem cluster (wind) + precise audience
-# (debug-tooling).
+# Topics other packages already use: debug tooling (diagnostics, debugging,
+# devtools), LLM agents (ai-agents) and the Tailwind-style cluster wind_kit
+# belongs to (tailwind).
 topics:
-  - wind
-  - mcp-server
+  - diagnostics
+  - debugging
+  - devtools
   - ai-agents
-  - flutter-testing
-  - debug-tooling
+  - tailwind
 
 environment:
   sdk: ">=3.4.0 <4.0.0"
@@ -25,7 +24,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  meta: ^1.16.0
+  meta: ^1.15.0
 
 dev_dependencies:
   flutter_test:

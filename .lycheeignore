@@ -1,0 +1,28 @@
+# URL patterns lychee skips when checking links in doc/, llms.txt and *.md.
+# Every line is a REGULAR EXPRESSION, not a glob.
+#
+# Add a host here only when it is auth-walled, rate-limited, or a placeholder in
+# a code sample. Real rot belongs in the report, not in this file.
+
+# GitHub auth wall: the login redirect answers with a 404 to an unauthenticated
+# CI runner.
+^https://github\.com/login
+
+# A private vulnerability report needs a signed-in session.
+^https://github\.com/anilcancakir/wind_kit_diagnostics_contracts/security/advisories/new
+
+# The package pages are published with the docs site; until then they answer 404.
+# Added 2026-11-13: remove this line once the docs site serves /wind_kit_diagnostics_contracts.
+^https://anilcancakir\.com/wind_kit_diagnostics_contracts(?:[/?#]|$)
+
+# Not on pub.dev yet. Added 2026-11-13: remove each line once the package is
+# published (wind_kit and tapir wait for their rename waves; this package for 1.3.0).
+^https://pub\.dev/packages/wind_kit(?:[/?#]|$)
+^https://pub\.dev/packages/tapir(?:[/?#]|$)
+^https://pub\.dev/packages/wind_kit_diagnostics_contracts
+^https://pub\.dev/documentation/wind_kit_diagnostics_contracts
+
+# Placeholder hosts inside example code.
+^https?://([a-z0-9-]+\.)*example\.com
+^https?://localhost
+^https?://127\.0\.0\.1

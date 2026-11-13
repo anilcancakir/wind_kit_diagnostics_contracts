@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:fluttersdk_wind_diagnostics_contracts/fluttersdk_wind_diagnostics_contracts.dart';
+import 'package:wind_kit_diagnostics_contracts/wind_kit_diagnostics_contracts.dart';
 
 /// Fake resolver that always returns a fixed non-empty map.
 class _FakeResolver implements WindDebugResolver {
@@ -25,7 +25,7 @@ class _SecondFakePerfResolver implements WindPerfResolver {
 }
 
 /// Fake perf resolver that returns all nine keys (six existing plus three new).
-/// Used for contract assertion that dusk-style reading code can type-check
+/// Used for contract assertion that tapir-style reading code can type-check
 /// the new Map-typed perf keys.
 class _CompletePerfResolver implements WindPerfResolver {
   @override
@@ -155,13 +155,13 @@ void main() {
   });
 
   test(
-    'WindPerfResolver.stats() includes three new Map-typed perf keys that dusk can type-check',
+    'WindPerfResolver.stats() includes three new Map-typed perf keys that tapir can type-check',
     () {
       // 1. Register a complete fake that returns all nine keys.
       final _CompletePerfResolver complete = _CompletePerfResolver();
       WindDebugRegistry.registerPerf(complete);
 
-      // 2. Read the stats (simulating dusk-style reading).
+      // 2. Read the stats (simulating tapir-style reading).
       final Map<String, Object?> stats =
           WindDebugRegistry.currentPerf?.stats() ?? <String, Object?>{};
 
