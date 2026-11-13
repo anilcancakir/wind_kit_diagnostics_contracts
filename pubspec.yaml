@@ -7,15 +7,15 @@ issue_tracker: https://github.com/anilcancakir/wind_kit_diagnostics_contracts/is
 
 # pub.dev search topics (max 5, lowercase + hyphens, regex ^[a-z][a-z0-9-]{0,31}$).
 # Drives tag-based discovery on https://pub.dev/packages?q=topic%3A<topic>.
-# Selected for 2025-2026 search intent: MCP-driven Flutter testing (mcp-server,
-# ai-agents, flutter-testing) + Wind-ecosystem cluster (wind) + precise audience
-# (debug-tooling).
+# Topics other packages already use: debug tooling (diagnostics, debugging,
+# devtools), LLM agents (ai-agents) and the Tailwind-style cluster wind_kit
+# belongs to (tailwind).
 topics:
-  - wind
-  - mcp-server
+  - diagnostics
+  - debugging
+  - devtools
   - ai-agents
-  - flutter-testing
-  - debug-tooling
+  - tailwind
 
 environment:
   sdk: ">=3.4.0 <4.0.0"
@@ -24,7 +24,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  meta: ^1.16.0
+  meta: ^1.15.0
 
 dev_dependencies:
   flutter_test:
