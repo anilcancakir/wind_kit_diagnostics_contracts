@@ -25,7 +25,7 @@ The only import is `package:wind_kit_diagnostics_contracts/wind_kit_diagnostics_
 |:--------|:--------|
 | An app that uses `wind_kit` | No. `wind_kit` depends on it, so you already have it. |
 | A debug tool that reads wind_kit state (`tapir`, an inspector, a DevTools extension) | Yes, as a direct dependency. Do not depend on `wind_kit` itself. |
-| A styling library that exposes its own state to the same tools | Yes, and implement `WindDebugResolver`. |
+| An app that styles with another library instead of wind_kit and wants the same tools to read it | Yes, and implement `WindDebugResolver`. There is one slot per app, so it cannot sit next to wind_kit's resolver. |
 | A test that needs a fake resolver | Yes, as a `dev_dependency`. |
 
 <a name="requirements"></a>
@@ -43,7 +43,7 @@ The only import is `package:wind_kit_diagnostics_contracts/wind_kit_diagnostics_
 
 - No `wind_kit` dependency: that is the point of the package.
 - No setup, config file, code generation or CLI command.
-- No registration of your own. `wind_kit` installs its resolvers at app boot, and until it does both registry slots are `null`.
+- No registration of your own. The host app installs wind_kit's resolvers at boot, and until it does (or if it never does) both registry slots are `null`.
 
 <a name="verify"></a>
 ## Verify

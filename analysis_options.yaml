@@ -3,7 +3,7 @@
 # `analysis_options.yaml` migrator, which re-applies it on every `pub get`, so
 # it stays committed: an uncommitted rewrite fails `flutter pub publish
 # --dry-run` with "1 checked-in file is modified in git" and exit 65, which is
-# a step in both `ci.yml` and `publish.yml`.
+# a step in `publish.yml`.
 analyzer:
   exclude:
     - build/**

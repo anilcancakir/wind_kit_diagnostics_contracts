@@ -79,7 +79,7 @@ void main() {
 | `registerForTesting(fake)` | Fills the debug slot only. |
 | `registerPerfForTesting(fake)` | Fills the perf slot only. |
 
-A fake does not have to return every key. Return the ones your tool reads, and add a case for an empty map to cover the non-wind_kit element path.
+A fake does not have to return every key. Return the ones your tool reads, and add a case for an empty map to cover the nothing-to-report path.
 
 <a name="related-documentation"></a>
 ## Related Documentation

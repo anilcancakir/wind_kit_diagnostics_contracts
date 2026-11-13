@@ -27,7 +27,7 @@ import 'package:meta/meta.dart';
 /// fakes (debug-only). Consumers receive a Map and never need to
 /// understand wind's internal types.
 ///
-/// Frozen contract for the 1.0.0 line; additive changes only (new
+/// Frozen contract for the 1.x line; additive changes only (new
 /// keys in the returned Map allowed; renaming or removing existing
 /// keys requires a major bump).
 abstract class WindDebugResolver {
@@ -85,10 +85,11 @@ abstract class WindPerfResolver {
 /// Process-global registry for the single active `WindDebugResolver`
 /// and the single active `WindPerfResolver`.
 ///
-/// Wind installs its concrete resolvers at app boot (gated by
-/// `!kReleaseMode`, so debug and profile builds); debug-tooling consumers look up the current
-/// resolver via [current] / [currentPerf]. Never registered in
-/// release builds.
+/// The host app installs the concrete resolvers at boot through wind_kit's
+/// `Wind.installDebugResolver()` and `Wind.installPerfResolver()` (gated by
+/// `!kReleaseMode`, so debug and profile builds); debug-tooling consumers
+/// look up the current resolver via [current] / [currentPerf]. Never
+/// registered in release builds.
 class WindDebugRegistry {
   // Unreachable from a test by design: a private constructor whose only job is
   // to stop this static-only registry being instantiated.

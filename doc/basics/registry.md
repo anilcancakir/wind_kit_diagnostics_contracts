@@ -55,7 +55,7 @@ The debug slot and the perf slot are independent. Registering one never touches 
 <a name="who-installs"></a>
 ## Who Installs
 
-`wind_kit` installs both at app boot, behind `!kReleaseMode`, so a debug or profile build carries them and a release build tree-shakes the call:
+The host app installs both through wind_kit at boot, behind `!kReleaseMode`, so a debug or profile build carries them and a release build tree-shakes the call. wind_kit never makes these calls itself:
 
 ```dart
 import 'package:flutter/foundation.dart';
@@ -69,7 +69,7 @@ void installWindDiagnostics() {
 }
 ```
 
-Each method is idempotent. In a release build both slots stay `null`.
+Each method is idempotent. In a release build both slots stay `null`, and so they do in a wind_kit app whose `main` never makes the calls.
 
 <a name="gotchas"></a>
 ## Gotchas
@@ -77,7 +77,7 @@ Each method is idempotent. In a release build both slots stay `null`.
 | Mistake | Fix |
 |:--------|:----|
 | Caching `WindDebugRegistry.current` in a field at startup | Read it on every use. The host may install after your tool starts, or never. |
-| Reading `null` as "this is not a wind_kit widget" | `null` means no resolver is registered (wind_kit is absent, or this is a release build). A non-wind_kit element resolves to an empty map. |
+| Reading `null` as "this is not a wind_kit widget" | `null` means no resolver is registered: wind_kit is absent, this is a release build, or the host never made the install calls. An element with nothing to report resolves to an empty map. |
 | Expecting a notification when a resolver is installed | There is none: the registry is two nullable getters. Poll on use. |
 | Calling the `*ForTesting` methods from `lib/` | They are `@visibleForTesting`. Production code installs through `register` and `registerPerf`. |
 | Registering a second resolver next to wind_kit's | The most recent call wins, so yours would replace wind_kit's. |

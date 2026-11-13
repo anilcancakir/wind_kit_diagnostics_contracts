@@ -15,10 +15,10 @@ This project follows [Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.
 
 ### Changed
 
-- The README is rewritten around what each contract returns, with a rules table for AI coding agents. It states the real install gate: wind_kit registers its resolvers behind `!kReleaseMode`, so debug and profile builds carry them.
-
 - **Renamed from `fluttersdk_wind_diagnostics_contracts` to `wind_kit_diagnostics_contracts`.** The package and its library file (`package:wind_kit_diagnostics_contracts/wind_kit_diagnostics_contracts.dart`) carry the new name, and the repository is `anilcancakir/wind_kit_diagnostics_contracts`. Migration: replace the dependency in `pubspec.yaml` and the import. `WindDebugResolver`, `WindDebugRegistry` and `WindPerfResolver`, and the frozen v1 key sets of `resolve` and `stats`, are unchanged.
-- The library and test comments name `wind_kit` and `tapir` instead of `fluttersdk_wind` and `fluttersdk_dusk`; the pubspec description and homepage were rewritten (no `documentation` key).
+- The library and test comments name `wind_kit` and `tapir` instead of `fluttersdk_wind` and `fluttersdk_dusk`; the pubspec description and homepage were rewritten (no `documentation` key), and the pub.dev topics are ones other packages share.
+- `meta` is constrained to `^1.15.0` (was `^1.16.0`). The package only uses `@visibleForTesting`, and Flutter 3.27, the documented floor, pins `meta` 1.15.0, so `^1.16.0` could not resolve there.
+- The README is rewritten around what each contract returns, with a rules table for AI coding agents. It states who installs the resolvers (the host app, through `Wind.installDebugResolver()` and `Wind.installPerfResolver()`, behind `!kReleaseMode`) and that a zero in `stats()` is ambiguous because wind_kit counts only during a measurement session.
 
 ---
 

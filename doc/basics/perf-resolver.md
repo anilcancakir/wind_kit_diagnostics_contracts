@@ -47,7 +47,7 @@ Map<String, int> widgetBuilds() {
 <a name="null-versus-zero"></a>
 ## Null Versus Zero
 
-Pass the `null` through instead of flattening it to zeros. `currentPerf == null` means no resolver was ever registered; a registered resolver that reports zeros means the counters really are zero. wind_kit counts only while its own `WindPerfCounters.enabled` flag is on, so installing the resolver costs nothing on its own.
+Pass the `null` through instead of flattening it to zeros. `currentPerf == null` means no resolver is registered. A registered resolver can still report zeros: wind_kit counts only while the host has switched counting on for a measurement session, and `cacheSize` is the one value that is always live. The contracts cannot report whether counting is on, so a zero is ambiguous on its own. A tool that needs counts starts the measurement through the host's own integration first.
 
 <a name="frozen-contract"></a>
 ## Frozen Contract
@@ -62,7 +62,7 @@ Same rule as [WindDebugResolver](debug-resolver.md): new keys are a minor bump, 
 | Reading `wDivBuilds` for a new feature | Read `widgetBuilds['WDiv']`. |
 | Reading `stats()` for per-element data | Counters have no element; use [WindDebugResolver](debug-resolver.md). |
 | Registering the perf resolver with `register` | Use `registerPerf`; `register` fills the debug slot. |
-| Assuming zeros mean nothing happened | The counters may be switched off; check wind_kit's flag first. |
+| Assuming zeros mean nothing happened | Counting is opt-in on the implementing side and the contract cannot say whether it is on. Only `cacheSize` is always live. |
 
 <a name="related-documentation"></a>
 ## Related Documentation

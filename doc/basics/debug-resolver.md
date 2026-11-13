@@ -12,7 +12,7 @@ Read the resolved wind_kit state of any `Element`: class name, breakpoint, brigh
 <a name="basic-usage"></a>
 ## Basic Usage
 
-A debug tool walks the element tree and asks the registered resolver about each element. A non-wind_kit element resolves to an empty map, so the walk is safe over any tree.
+A debug tool walks the element tree and asks the registered resolver about each element. An element with nothing to report (not a W-widget, or one without a `className`) resolves to an empty map, so the walk is safe over any tree.
 
 ```dart
 import 'package:flutter/widgets.dart';
@@ -23,7 +23,7 @@ void emitWindBlock(StringBuffer buffer, Element element) {
   if (resolver == null) return; // wind_kit is not in this app, or this is a release build.
 
   final Map<String, Object?> data = resolver.resolve(element);
-  if (data.isEmpty) return; // Not a wind_kit widget.
+  if (data.isEmpty) return; // Nothing to report for this element.
 
   buffer.writeln('wind:');
   data.forEach((String key, Object? value) {
@@ -50,7 +50,7 @@ void emitWindBlock(StringBuffer buffer, Element element) {
 <a name="implementing-a-resolver"></a>
 ## Implementing a Resolver
 
-`wind_kit` ships the production resolver. Implement the contract yourself only for a test fake or for another styling library that follows the same `className` convention.
+`wind_kit` ships the production resolver. Implement the contract yourself only for a test fake, or in an app that styles with another library instead of wind_kit. There is one slot per app, so a second implementation next to wind_kit's would replace it.
 
 ```dart
 import 'package:flutter/widgets.dart';
@@ -95,7 +95,7 @@ The key set is frozen for the 1.x line. A new key is a minor bump, and renaming 
 |:--------|:----|
 | Asserting that the map has exactly the keys above | Read the keys you need and ignore the rest; minor releases add keys. |
 | Treating a missing `bgColor` as an error | It is present only when the colour resolved. |
-| Casting `states` to `List<dynamic>` | It is a `List<String>`. |
+| Printing `states` raw in a one-line snapshot | It is a `List<String>`; join it (`states.join(',')`). |
 | Returning `null` from `resolve` for a foreign element | The signature is non-nullable: return `const {}`. |
 
 <a name="related-documentation"></a>

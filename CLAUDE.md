@@ -43,7 +43,7 @@ A change to a returned key set is a coordinated bump across wind_kit and tapir, 
 
 Every feature, fix, or refactor must go through the red-green-refactor cycle:
 
-1. **Red**: Write a failing test that describes the expected behavior
+1. **Red**: Write a failing test that describes the expected behaviour
 2. **Green**: Write the minimum code to make the test pass
 3. **Refactor**: Clean up while keeping tests green
 
@@ -78,7 +78,7 @@ Every feature, fix, or refactor must go through the red-green-refactor cycle:
 2. After it merges, tag the merge commit with the bare version (`git tag 1.3.1 && git push origin 1.3.1`, no `v`). `publish.yml` runs from the tag; the pub.dev Admin tab holds repository `anilcancakir/wind_kit_diagnostics_contracts`, tag pattern `{{version}}` and push events only.
 3. A failed `validate` is fixed forward: delete the tag (`git push --delete origin <tag>` and `git tag -d <tag>`), fix it on a PR and tag the new merge commit, because a re-run builds the same commit. If only `github-release` fails after pub.dev accepted the version, use "Re-run failed jobs" (never "Re-run all jobs", where `publish` is rejected as a duplicate) or run `gh release create <tag> --title <tag> --latest --verify-tag --notes-file <file>`.
 
-The first publish of this name (1.3.0) is manual, since tag-triggered OIDC cannot create a package: `dart pub publish --force` from a clean checkout of the merge commit, then the tag.
+The first publish of this name (1.3.0) is manual, since tag-triggered OIDC cannot create a package: `dart pub publish --force` from a clean checkout of the merge commit, then push the tag, cancel the doomed `publish.yml` run (OIDC rejects a version pub.dev already has, so `github-release` never runs) and create the release by hand: `gh release create 1.3.0 --title 1.3.0 --latest --verify-tag --notes-file <file>`.
 
 ## CI
 

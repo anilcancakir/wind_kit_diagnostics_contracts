@@ -42,7 +42,7 @@
 flutter pub add wind_kit_diagnostics_contracts
 ```
 
-Most apps never add it by hand: `wind_kit` depends on it, so any app that uses wind_kit already has it. Add it when you author a debug tool that reads wind_kit state, or a styling library that exposes its own.
+Most apps never add it by hand: `wind_kit` depends on it, so any app that uses wind_kit already has it. Add it when you author a debug tool that reads wind_kit state.
 
 ## Why it exists
 
@@ -56,12 +56,12 @@ This package breaks the loop. Both sides depend on the contract here, and neithe
         +-------------+-------------+
         |                           |
     wind_kit                      tapir
- (registers a resolver)   (reads it at snapshot time)
+ (implements a resolver)  (reads it at snapshot time)
 ```
 
 ## WindDebugResolver
 
-One method, `resolve(Element)`, answers per-element widget state. A non-wind_kit element resolves to an empty map, so a tool can walk any tree.
+One method, `resolve(Element)`, answers per-element widget state. An element with nothing to report (not a W-widget, or one without a `className`) resolves to an empty map, so a tool can walk any tree.
 
 ```dart
 import 'package:flutter/widgets.dart';
@@ -72,7 +72,7 @@ void emitWindBlock(StringBuffer buffer, Element element) {
   if (resolver == null) return; // wind_kit is not in this app, or this is a release build.
 
   final Map<String, Object?> data = resolver.resolve(element);
-  if (data.isEmpty) return; // Not a wind_kit widget.
+  if (data.isEmpty) return; // Nothing to report for this element.
 
   buffer.writeln('wind:');
   data.forEach((String key, Object? value) => buffer.writeln('  $key: $value'));
@@ -103,11 +103,11 @@ Map<String, Object?>? readStats() {
 }
 ```
 
-`stats()` returns `cacheHits`, `cacheMisses`, `cacheBypasses`, `cacheSize`, `wDivBuilds` and `wTextBuilds` as `int`, plus `widgetBuilds`, `wrapperEmissions` and `inheritedReads` as `Map<String, int>`. Keep the `null`: it tells "never registered" apart from "the counters really are zero".
+`stats()` returns `cacheHits`, `cacheMisses`, `cacheBypasses`, `cacheSize`, `wDivBuilds` and `wTextBuilds` as `int`, plus `widgetBuilds`, `wrapperEmissions` and `inheritedReads` as `Map<String, int>`. Keep the `null`: it tells "no resolver registered" apart from a resolver that reports zeros. A zero is ambiguous on its own, because wind_kit counts only during a measurement session (`cacheSize` is always live).
 
 ## Registering
 
-wind_kit installs both resolvers at app boot behind `!kReleaseMode`, so a release build tree-shakes them:
+The host app installs both resolvers through wind_kit at boot, behind `!kReleaseMode`, so a release build tree-shakes them. wind_kit never makes these calls itself:
 
 ```dart
 import 'package:flutter/foundation.dart';
@@ -132,9 +132,10 @@ Rules for an agent writing code against this package. Each one is a mistake the 
 | Do | Because |
 |----|---------|
 | Import only `package:wind_kit_diagnostics_contracts/wind_kit_diagnostics_contracts.dart` | It is the only library; everything is public through it. |
-| Read `WindDebugRegistry.current` and `currentPerf` on every use and handle `null` | The host may install after your tool starts, or never (release build, no wind_kit). `null` means no resolver; an empty map means a non-wind_kit element. |
+| Read `WindDebugRegistry.current` and `currentPerf` on every use and handle `null` | The host may install after your tool starts, or never (release build, no wind_kit, or no install call). `null` means no resolver; an empty map means the element has nothing to report. |
 | Read the keys you need and ignore the rest | A minor release adds keys. Renaming or removing one is a major bump. |
 | Take per-type build counts from `widgetBuilds`, not `wDivBuilds` or `wTextBuilds` | The two older keys duplicate `widgetBuilds['WDiv']` and `['WText']` and stay only for the 1.x line. |
+| Treat zeros in `stats()` as ambiguous | wind_kit counts only during a measurement session, so a zero can mean it is off. Only `cacheSize` is always live. |
 | Register through `register` and `registerPerf`, and call `*ForTesting` only from `test/` | The testing seams are `@visibleForTesting`; a fake installed through `register` reads as production wiring. |
 | Call `WindDebugRegistry.resetForTesting()` in `setUp` or `tearDown` | The registry is process-global and survives between tests. |
 | Never add a method to either contract | It breaks every implementer, test fakes included, so it is a major bump. Add a key, or a new contract. |

@@ -7,7 +7,7 @@ import 'package:flutter/widgets.dart';
 import 'package:wind_kit_diagnostics_contracts/wind_kit_diagnostics_contracts.dart';
 
 /// Writes a `wind:` block for [element], or nothing when wind_kit has not
-/// registered a resolver or the element is not a wind_kit widget.
+/// registered a resolver or the element has nothing to report.
 void emitWindBlock(StringBuffer buffer, Element element) {
   final WindDebugResolver? resolver = WindDebugRegistry.current;
   if (resolver == null) return;

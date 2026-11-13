@@ -14,12 +14,12 @@ flutter pub add wind_kit_diagnostics_contracts
 import 'package:flutter/widgets.dart';
 import 'package:wind_kit_diagnostics_contracts/wind_kit_diagnostics_contracts.dart';
 
-// Read the state of any element; wind_kit registers the resolver at boot.
+// Read the state of any element; the host app registers the resolver at boot.
 Map<String, Object?> windState(Element element) {
   final WindDebugResolver? resolver = WindDebugRegistry.current;
   if (resolver == null) return const <String, Object?>{}; // wind_kit absent, or a release build.
 
-  return resolver.resolve(element); // An empty map for a non-wind_kit element.
+  return resolver.resolve(element); // An empty map when the element has nothing to report.
 }
 ```
 
@@ -27,20 +27,21 @@ Most apps never add it by hand: `wind_kit` depends on it. Add it for a debug too
 
 ## API
 
-- `WindDebugResolver`: `resolve(Element)` returns `Map<String, Object?>` with `className` (String, W-widgets with a non-empty className), `breakpoint`, `brightness` (`light` or `dark`), `platform` (Strings), `states` (`List<String>`), and `bgColor` and `textColor` (hex Strings, present only when resolved). Returns `const {}` for a non-wind_kit element.
+- `WindDebugResolver`: `resolve(Element)` returns `Map<String, Object?>` with `className` (String, W-widgets with a non-empty className), `breakpoint`, `brightness` (`light` or `dark`), `platform` (Strings), `states` (`List<String>`), and `bgColor` and `textColor` (hex Strings, present only when resolved). Returns `const {}` for an element with nothing to report (not a W-widget, or one without a `className`).
 - `WindPerfResolver`: `stats()` returns `cacheHits`, `cacheMisses`, `cacheBypasses`, `cacheSize`, `wDivBuilds`, `wTextBuilds` (all `int`) and `widgetBuilds`, `wrapperEmissions`, `inheritedReads` (all `Map<String, int>`). `wDivBuilds` and `wTextBuilds` duplicate `widgetBuilds['WDiv']` and `['WText']`.
 - `WindDebugRegistry`: static `current` and `currentPerf` (nullable), `register(resolver)` and `registerPerf(resolver)` (idempotent, most recent call wins, separate slots). Test-only: `resetForTesting()` (clears both slots), `registerForTesting`, `registerPerfForTesting`.
 
 ## Platforms
 
-Plain Dart over Flutter's `Element`: every platform Flutter supports, no native code. wind_kit installs its resolvers behind `!kReleaseMode` (`Wind.installDebugResolver()`, `Wind.installPerfResolver()`), so in a release build both slots are `null`.
+Plain Dart over Flutter's `Element`: every platform Flutter supports, no native code. The host app installs the resolvers through wind_kit behind `!kReleaseMode` (`Wind.installDebugResolver()`, `Wind.installPerfResolver()`), so both slots are `null` in a release build and in an app that never makes the calls.
 
 ## Rules for agents
 
 - Import only `package:wind_kit_diagnostics_contracts/wind_kit_diagnostics_contracts.dart`.
-- Read `WindDebugRegistry.current` and `currentPerf` on every use and handle `null`: it means no resolver is registered. An empty map means the element is not a wind_kit widget.
+- Read `WindDebugRegistry.current` and `currentPerf` on every use and handle `null`: it means no resolver is registered. An empty map means the element has nothing to report.
 - Read the keys you need and ignore the rest: a minor release adds keys, and renaming or removing one is a major bump.
 - Take per-type build counts from `widgetBuilds`, not from `wDivBuilds` or `wTextBuilds`.
+- Treat zeros in `stats()` as ambiguous: wind_kit counts only during a measurement session, and only `cacheSize` is always live.
 - Never add a method to either contract: it breaks every implementer, test fakes included. Add a key or a new contract.
 - In tests call `WindDebugRegistry.resetForTesting()` in `setUp` or `tearDown`, and install fakes with `registerForTesting` and `registerPerfForTesting` only.
 - Do not depend on `wind_kit` from a debug tool: the contract package exists so you do not have to.
