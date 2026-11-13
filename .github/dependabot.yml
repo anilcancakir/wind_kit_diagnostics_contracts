@@ -1,17 +1,15 @@
-# Dependabot config for fluttersdk/wind_diagnostics_contracts
+# Dependabot config for anilcancakir/wind_kit_diagnostics_contracts
 #
 # This package is deliberately tiny: `meta` and `flutter_lints` are the whole
-# dependency surface, and that is the point. It sits between wind and dusk so
-# neither has to depend on the other, so a dependency added here would be a
-# dependency forced on both. There is no fluttersdk group below for the same
+# dependency surface, and that is the point. It sits between wind_kit and
+# tapir so neither has to depend on the other, so a dependency added here would
+# be a dependency forced on both. There is no sibling group below for the same
 # reason: this package depends on no sibling, and if it ever does, that is a
 # design decision rather than a bump.
 #
 # Grouping policy matches the rest of the ecosystem: minor + patch roll up into
 # one weekly PR per bucket, a major opens its own PR. `dependabot-auto-merge.yml`
 # arms auto-merge for github-actions minor + patch only.
-#
-# The default branch here is `develop`, so that is where Dependabot targets.
 
 version: 2
 
