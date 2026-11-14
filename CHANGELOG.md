@@ -8,6 +8,10 @@ This project follows [Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
+- **The link check no longer skips the pub.dev pages of this package, `wind_kit` and `tapir`, or the docs-site pages.** All of them answer 200 now that the packages are published, so a dead link to any of them fails the weekly external check instead of passing unseen.
+
 ---
 
 ## [1.3.0] - 2026-11-13
