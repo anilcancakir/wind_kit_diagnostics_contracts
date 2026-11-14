@@ -1,20 +1,12 @@
-# Dependabot config for anilcancakir/wind_kit_diagnostics_contracts
-#
-# This package is deliberately tiny: `meta` and `flutter_lints` are the whole
-# dependency surface, and that is the point. It sits between wind_kit and
-# tapir so neither has to depend on the other, so a dependency added here would
-# be a dependency forced on both. There is no sibling group below for the same
-# reason: this package depends on no sibling, and if it ever does, that is a
-# design decision rather than a bump.
-#
-# Grouping policy matches the rest of the ecosystem: minor + patch roll up into
-# one weekly PR per bucket, a major opens its own PR. `dependabot-auto-merge.yml`
-# arms auto-merge for github-actions minor + patch only.
+# Dependabot (REPO_SPEC.md Appendix B). Minor and patch updates roll up into one
+# pull request per ecosystem and week; a major opens its own pull request and
+# waits for review. The ecosystem's own 0.x packages are excluded from the group
+# (a 0.x minor bump is breaking in pub, yet Dependabot reports it as a minor),
+# so each opens its own pull request, which is never armed for auto-merge.
 
 version: 2
 
 updates:
-  # Package deps (pubspec.yaml at /)
   - package-ecosystem: pub
     directory: /
     schedule:
@@ -22,7 +14,7 @@ updates:
       day: monday
       time: "06:00"
       timezone: Europe/Istanbul
-    open-pull-requests-limit: 3
+    open-pull-requests-limit: 5
     labels:
       - dependencies
       - pub
@@ -35,11 +27,17 @@ updates:
       minor-and-patch:
         patterns:
           - "*"
+        exclude-patterns:
+          - magic
+          - "magic_*"
+          - "wind_kit*"
+          - tapir
+          - crumbs
+          - dowel
         update-types:
           - minor
           - patch
 
-  # GitHub Actions under .github/workflows/
   - package-ecosystem: github-actions
     directory: /
     schedule:
@@ -57,15 +55,14 @@ updates:
       prefix: ci
       include: scope
     groups:
-      actions-official:
+      minor-and-patch:
         patterns:
-          - actions/*
-      release-stack:
-        patterns:
-          - dart-lang/*
-          - subosito/*
-          - softprops/*
-          - codecov/*
-      dependabot-helpers:
-        patterns:
-          - dependabot/*
+          - "*"
+        update-types:
+          - minor
+          - patch
+    ignore:
+      # The reusable workflow that publishes to pub.dev over OIDC runs only on a
+      # release tag, so no pull request check exercises a bump of it: it is
+      # reviewed and updated by hand.
+      - dependency-name: dart-lang/setup-dart/.github/workflows/publish.yml
