@@ -31,7 +31,7 @@ There is no agent skill: the contracts are read through the wind_kit and tapir s
 
 ## Post-Change Checklist
 
-After ANY source code change, sync **before committing**. A change is not done while one of these is stale:
+After any source code change, sync before committing. A change is not done while one of these is stale:
 
 1. **`CHANGELOG.md`**: Add entry under `[Unreleased]` section
 2. **`README.md`, `llms.txt` and the `doc/` pages**: Update if the API, a key or a rule changes
@@ -70,7 +70,7 @@ Every feature, fix, or refactor must go through the red-green-refactor cycle:
 | Importing `wind_kit` or `tapir` | Never: this package is the neutral bridge |
 | Removing `// coverage:ignore-line` from `WindDebugRegistry._()` | The private constructor is unreachable from a test; the pragma keeps codecov at 100% |
 | Removing `analyzer.exclude` from `analysis_options.yaml` | The Flutter migrator rewrites it on every `pub get`, and an uncommitted rewrite fails `flutter pub publish --dry-run` with exit 65 |
-| Relative paths in `pubspec_overrides.yaml` | Use ABSOLUTE ones; the file is never committed |
+| Relative paths in `pubspec_overrides.yaml` | Use absolute ones; the file is never committed |
 
 ## Release
 
